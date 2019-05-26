@@ -13,14 +13,6 @@ class QuestionnaireAnalysis:
         self.data_fname = data_fname
         self.data = None
 
-    # def read_data(self):
-    #     """
-    #     Reads the json data located in self.data_fname into memory, to
-    #     the attribute self.data.
-    #     """
-    #     with open(self.data_fname, encoding='utf-8') as f:
-    #         self.data = json.loads(f.read())
-
     def read_data(self):
         """
         Reads the json data located in self.data_fname into memory, to
