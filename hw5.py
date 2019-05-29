@@ -2,7 +2,7 @@ import json
 from typing import Union, Tuple
 import pathlib
 import pandas as pd
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 import numpy as np
 
 class QuestionnaireAnalysis:
@@ -31,7 +31,17 @@ class QuestionnaireAnalysis:
         """
         # groupby age
     def plot_hist (self):
-        pass
+        # ax = self.data.plot.hist (column = 'age', bins = 10)
+        # plt.show ()
+        # self.data['age'].hist (bins = 10)
+        # plt.show ()
+        ax = self.data[['age']].plot(kind='hist',bins=[0,10,20,30,40,40,50,60,70,80,90,100],rwidth=0.8)
+        plt.title ('age distribution')
+        plt.xlabel('age')
+        plt.ylabel('number of people')
+        plt.xticks(np.arange(0, 100, step=10))
+        ax.get_legend().remove()
+        plt.show()
 
     def calc_dist (self):
         pass
@@ -56,7 +66,8 @@ if __name__ == "__main__":
     d = QuestionnaireAnalysis(data_fname)
     d.read_data()
     # print (d.data)
-    d.remove_rows_without_mail()
+    # d.remove_rows_without_mail()
+    d.plot_hist()
     
         
         
