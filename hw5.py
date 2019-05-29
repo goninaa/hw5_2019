@@ -43,13 +43,20 @@ class QuestionnaireAnalysis:
         plt.show()
         
     def people_in_bin (self):
-        bins = pd.IntervalIndex.from_tuples([(0, 10), (10, 20), (20, 30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
-        result = pd.cut(self.data['age'], bins).value_counts().sort_index()
-        # self.data['group'] = pd.cut(df['size'], bins=bins)
-        self.data['group'] = result
-        # result = pd.cut(self.data['age'], bins).value_counts()
+        # bins = pd.IntervalIndex.from_tuples([(0,10), (10,20), (20,30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
+        bins =np.array([0,10,20,30,40,50,60,70,80,90,100])
+        result= pd.cut(self.data['age'], bins).value_counts().sort_index()
+        # out, b = pd.cut(self.data['age'], bins, retbins=True)
         print (result)
-        print (result[[5][0]])
+        # print (out)
+        # print (out.value_counts().sort_index())
+        # print (b.shape)
+        # print (b[0], out[0])
+        # print (b[2], out[2])
+        # print (out[1], b)
+        # print (result[[5]])
+        print (result.shape)
+        # print (result[6], bins[2])
 
 
     def remove_rows_without_mail(self) -> pd.DataFrame:
@@ -71,7 +78,7 @@ if __name__ == "__main__":
     # d.remove_rows_without_mail()
     # d.plot_hist()
     d.show_age_distrib()
-    print (d.data['group'])
+    # print (d.data['group'])
     
         
         
