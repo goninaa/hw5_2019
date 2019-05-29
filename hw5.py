@@ -29,6 +29,9 @@ class QuestionnaireAnalysis:
         The first item being the number of people in a given bin.
         The second item being the bin edges.
         """
+        self.plot_hist()
+        self.people_in_bin ()
+
         # groupby age
     def plot_hist (self):
         ax = self.data[['age']].plot(kind='hist',bins=[0,10,20,30,40,40,50,60,70,80,90,100],rwidth=0.8)
@@ -38,13 +41,16 @@ class QuestionnaireAnalysis:
         plt.xticks(np.arange(0, 100, step=10))
         ax.get_legend().remove()
         plt.show()
+        
+    def people_in_bin (self):
+        bins = pd.IntervalIndex.from_tuples([(0, 10), (10, 20), (20, 30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
+        result = pd.cut(self.data['age'], bins).value_counts().sort_index()
+        # self.data['group'] = pd.cut(df['size'], bins=bins)
+        self.data['group'] = result
+        # result = pd.cut(self.data['age'], bins).value_counts()
+        print (result)
+        print (result[[5][0]])
 
-    def calc_dist (self):
-        pass
-
-        """Plot the distribution of ages of the participants. 
-        The bins for the histogram should be [0, 10), [10, 20), [20, 30),
-         ..., [90, 100). The function should return the result."""
 
     def remove_rows_without_mail(self) -> pd.DataFrame:
         """
@@ -63,7 +69,9 @@ if __name__ == "__main__":
     d.read_data()
     # print (d.data)
     # d.remove_rows_without_mail()
-    d.plot_hist()
+    # d.plot_hist()
+    d.show_age_distrib()
+    print (d.data['group'])
     
         
         
