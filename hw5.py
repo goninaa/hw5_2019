@@ -31,10 +31,6 @@ class QuestionnaireAnalysis:
         """
         # groupby age
     def plot_hist (self):
-        # ax = self.data.plot.hist (column = 'age', bins = 10)
-        # plt.show ()
-        # self.data['age'].hist (bins = 10)
-        # plt.show ()
         ax = self.data[['age']].plot(kind='hist',bins=[0,10,20,30,40,40,50,60,70,80,90,100],rwidth=0.8)
         plt.title ('age distribution')
         plt.xlabel('age')
