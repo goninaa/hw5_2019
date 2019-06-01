@@ -60,7 +60,8 @@ class QuestionnaireAnalysis:
         valid_email = self.data['email'].str.contains('@' and '.co')
         df_valid_email = self.data.where(valid_email)
         df_valid_email = df_valid_email.dropna(subset=['email'])
-        print (df_valid_email)
+        # print (df_valid_email)
+        return df_valid_email
 
     def fill_na_with_mean(self) -> Union[pd.DataFrame, np.ndarray]:
         """
@@ -70,7 +71,13 @@ class QuestionnaireAnalysis:
         as well as the row indices of the students that their new grades
         were generated.
         """
-        
+        # print (self.data['q1'].mean())
+        filled = self.data.loc[:,'q1':'q5'].fillna(self.data.mean())
+        print (filled)
+        # retrun self.data, students_na
+        return filled
+
+
 
 if __name__ == "__main__":
     data_fname = 'data.json'
@@ -79,8 +86,9 @@ if __name__ == "__main__":
     # print (d.data)
     # d.remove_rows_without_mail()
     # d.plot_hist()
-    d.show_age_distrib()
+    # d.show_age_distrib()
     # print (d.data['group'])
+    d.fill_na_with_mean()
     
         
         
