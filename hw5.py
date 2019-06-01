@@ -71,11 +71,26 @@ class QuestionnaireAnalysis:
         as well as the row indices of the students that their new grades
         were generated.
         """
-        # print (self.data['q1'].mean())
-        filled = self.data.loc[:,'q1':'q5'].fillna(self.data.mean())
-        print (filled)
+        # filled = self.data.loc[:,'q1':'q5'].fillna(self.data.mean())
+        # filled = self.data.T.fillna(self.data.mean(axis=1)).T
+        # filled = self.data['q1'].apply(lambda row: row.fillna(row['q1'].mean()),axis=0)
+        # self.data['q_mean'] = self.data.loc[:,'q1':'q5'].mean(axis=1) #$
+        # print (q_mean)
+        # filled = self.data.loc[:,'q1':'q5'].fillna(self.data['q_mean'])
+        # filled = self.data.loc['q1'] = np.where(self.data.loc['q1'].isnull(), df.Cat2, df.Cat1)
+        # print (filledata
+        # print (self.data)
+        
+        t_rows = self.data.loc[:,'q1':'q5'].T
+        t_rows_fill = t_rows.fillna(t_rows.mean()).T
+        # print (t_rows)
+        # print (t_rows_fill)
+        self.data.loc[:,'q1':'q5'] = t_rows_fill
+        print (self.data)
+        # print (self.data)
+        # students_na = 
         # retrun self.data, students_na
-        return filled
+        # return filled
 
 
 
