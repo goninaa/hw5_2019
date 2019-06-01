@@ -37,6 +37,7 @@ class QuestionnaireAnalysis:
         self.people_in_bin ()
 
     def plot_hist (self):
+        """ plots an histogram """
         ax = self.data[['age']].plot(kind='hist',bins=[0,10,20,30,40,40,50,60,70,80,90,100],rwidth=0.8)
         plt.title ('age distribution')
         plt.xlabel('age')
@@ -46,6 +47,7 @@ class QuestionnaireAnalysis:
         plt.show()
         
     def people_in_bin (self):
+        """ returns the number of people in the bins"""
         bins = pd.IntervalIndex.from_tuples([(0,10), (10,20), (20,30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
         # bins =np.array([0,10,20,30,40,50,60,70,80,90,100])
         people = pd.cut(self.data['age'], bins).value_counts().sort_index().values
@@ -84,7 +86,26 @@ class QuestionnaireAnalysis:
         
         return filled_rows, inds
 
-
+    def correlate_gender_age(self) -> pd.DataFrame:
+        """
+        Looks for a correlation between the gender of the subject, their age
+        and the score for all five questions.
+        Returns a DataFrame with a MultiIndex containing the gender and whether
+        the subject is above 40 years of age, and the average score in each of
+        the five questions.
+        """
+        self.data['over 40'] = self.data['age'] > 40
+        gender_age = self.data.groupby(['gender', 'over 40']).mean()
+        gender_age.pop('id')
+        gender_age.pop('age')
+        # print (gender_age)
+        # plot:
+        gender_age.plot(kind = 'bar')
+        plt.title ('Mean question results for different groups (True means above 40)')
+        plt.ylabel('Score')
+        plt.legend (loc = 1)
+        plt.show()
+        return gender_age
 
 if __name__ == "__main__":
     data_fname = 'data.json'
@@ -95,6 +116,7 @@ if __name__ == "__main__":
     d.show_age_distrib()
     d.fill_na_with_mean()
     # print (d.data)
+    d.correlate_gender_age()
 
     
         
