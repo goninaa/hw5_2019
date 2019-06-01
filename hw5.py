@@ -12,8 +12,12 @@ class QuestionnaireAnalysis:
     """
     
     def __init__(self, data_fname: Union[pathlib.Path, str]):
-        self.data_fname = data_fname
-        self.data = None
+        if isinstance (data_fname, str):
+            self.data_fname = pathlib.Path(data_fname)
+        else:
+            self.data_fname = data_fname
+        if not self.data_fname.is_file():
+            raise ValueError ('file does not exists')
 
     def read_data(self):
         """
@@ -71,7 +75,7 @@ class QuestionnaireAnalysis:
         as well as the row indices of the students that their new grades
         were generated.
         """
-        inds = np.asarray(self.data.loc[:,'q1':'q5'].isnull()).nonzero()
+        inds = np.asarray(self.data.loc[:,'q1':'q5'].isnull()).nonzero()[0]
         # print (inds)
         t_rows = self.data.loc[:,'q1':'q5'].T  # transpose relevant rows
         filled_rows = t_rows.fillna(t_rows.mean()).T  # fillna the rows and transpose back
@@ -87,11 +91,11 @@ if __name__ == "__main__":
     d = QuestionnaireAnalysis(data_fname)
     d.read_data()
     # print (d.data)
-    # d.remove_rows_without_mail()
-    # d.plot_hist()
-    # d.show_age_distrib()
-    # print (d.data['group'])
+    d.remove_rows_without_mail()
+    d.show_age_distrib()
     d.fill_na_with_mean()
+    # print (d.data)
+
     
         
         
