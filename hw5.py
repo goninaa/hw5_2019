@@ -32,7 +32,6 @@ class QuestionnaireAnalysis:
         self.plot_hist()
         self.people_in_bin ()
 
-        # groupby age
     def plot_hist (self):
         ax = self.data[['age']].plot(kind='hist',bins=[0,10,20,30,40,40,50,60,70,80,90,100],rwidth=0.8)
         plt.title ('age distribution')
@@ -43,20 +42,13 @@ class QuestionnaireAnalysis:
         plt.show()
         
     def people_in_bin (self):
-        # bins = pd.IntervalIndex.from_tuples([(0,10), (10,20), (20,30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
-        bins =np.array([0,10,20,30,40,50,60,70,80,90,100])
-        result= pd.cut(self.data['age'], bins).value_counts().sort_index()
-        # out, b = pd.cut(self.data['age'], bins, retbins=True)
-        print (result)
-        # print (out)
-        # print (out.value_counts().sort_index())
-        # print (b.shape)
-        # print (b[0], out[0])
-        # print (b[2], out[2])
-        # print (out[1], b)
-        # print (result[[5]])
-        print (result.shape)
-        # print (result[6], bins[2])
+        bins = pd.IntervalIndex.from_tuples([(0,10), (10,20), (20,30), (30,40),(40,50),(50,60),(60,70),(70,80),(80,90),(90,100)])
+        # bins =np.array([0,10,20,30,40,50,60,70,80,90,100])
+        people = pd.cut(self.data['age'], bins).value_counts().sort_index().values
+        # print (people)
+        # print (people[2], bins[2])
+        people_bin = (people, bins)
+        return people_bin
 
 
     def remove_rows_without_mail(self) -> pd.DataFrame:
@@ -69,6 +61,16 @@ class QuestionnaireAnalysis:
         df_valid_email = self.data.where(valid_email)
         df_valid_email = df_valid_email.dropna(subset=['email'])
         print (df_valid_email)
+
+    def fill_na_with_mean(self) -> Union[pd.DataFrame, np.ndarray]:
+        """
+        Finds, in the original DataFrame, the subjects that didn't answer
+        all questions, and replaces that missing value with the mean of the
+        other grades for that student. Returns the corrected DataFrame,
+        as well as the row indices of the students that their new grades
+        were generated.
+        """
+        
 
 if __name__ == "__main__":
     data_fname = 'data.json'
